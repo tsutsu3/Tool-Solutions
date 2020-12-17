@@ -60,7 +60,7 @@ esac
 echo "Compute Library arch = ${acl_arch}"
 
 # Build with scons
-scons -j16  Werror=0 debug=0 neon=1 gles_compute=0 embed_kernels=0 \
+scons -j$NP_MAKE Werror=0 debug=0 neon=1 gles_compute=0 embed_kernels=0 \
   os=linux arch=$acl_arch build=native \
   build_dir=$install_dir/build
 
