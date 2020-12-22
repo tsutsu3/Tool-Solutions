@@ -184,30 +184,31 @@ fi
 echo $extra_args
 
 # Disable [output clipped, log limit 1MiB reached]
-export BUILDKIT_STEP_LOG_MAX_SIZE=$((1024*1024*1024))
+docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=$((1024*1024*1024)) --name raspberry
+docker buildx use raspberry
 
 if [[ $build_base_image ]]; then
   # Stage 1: Base image, Ubuntu with core packages and GCC9
-  docker build $extra_args --target pytorch-base -t pytorch-base:latest .
+  docker buildx build $extra_args --target pytorch-base -t pytorch-base:latest --load .
 fi
 
 if [[ $build_libs_image ]]; then
   # Stage 2: Libs image, essential maths libs and Python built and installed
-  docker build $extra_args --target pytorch-libs -t pytorch-libs:latest .
+  docker buildx build $extra_args --target pytorch-libs -t pytorch-libs:latest --load .
 fi
 
 if [[ $build_tools_image ]]; then
   # Stage 3: Tools image, Python3 venv added with additional Python essentials
-  docker build $extra_args --target pytorch-tools -t pytorch-tools:latest .
+  docker buildx build $extra_args --target pytorch-tools -t pytorch-tools:latest --load .
 fi
 
 if [[ $build_dev_image ]]; then
   # Stage 4: Adds PyTorch build with sources
-  docker build $extra_args --target pytorch-dev -t pytorch-dev:onednn-v1.7 .
+  docker buildx build $extra_args --target pytorch-dev -t pytorch-dev:onednn-v1.7 --load .
 fi
 
 if [[ $build_pytorch_image ]]; then
   # Stage 5: Adds PyTorch examples
-  docker build $extra_args --target pytorch -t pytorch:onednn-v1.7 .
+  docker buildx build $extra_args --target pytorch -t pytorch:onednn-v1.7 --load .
 fi
 
