@@ -244,6 +244,9 @@ fi
 extra_args="$extra_args --build-arg cpu=$target"
 echo "***** $extra_args"
 
+# Disable [output clipped, log limit 1MiB reached]
+export BUILDKIT_STEP_LOG_MAX_SIZE=$((1024*1024*1024))
+
 if [[ $build_base_image ]]; then
   # Stage 1: Base image, Ubuntu with core packages and GCC9
   docker build $extra_args --target tensorflow-base -t tensorflow-base-v$tf_version:latest .
@@ -261,10 +264,10 @@ fi
 
 if [[ $build_dev_image ]]; then
   # Stage 4: Adds bazel and TensorFlow builds with sources and creates a whl.
-  docker build $extra_args --target tensorflow-dev -t tensorflow-dev-v$tf_version$onednn:latest .
+  docker build $extra_args --target tensorflow-dev -t tensorflow-dev-v$tf_version$onednn:onednn-v1.7 .
 fi
 
 if [[ $build_tensorflow_image ]]; then
   # Stage 5: Clone benchmarks with TensorFlow installed.
-  docker build $extra_args --target tensorflow -t tensorflow-v$tf_version$onednn:latest .
+  docker build $extra_args --target tensorflow -t tensorflow-v$tf_version$onednn:onednn-v1.7 .
 fi

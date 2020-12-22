@@ -84,7 +84,7 @@ if [[ $NP_MAKE ]]; then extra_args="$extra_args --jobs=$NP_MAKE"; fi
 if [[ $ONEDNN_BUILD ]]; then
   echo "$ONEDNN_BUILD build for $TF_VERSION"
   if [[ $tf_id == '1' ]]; then
-    bazel build $extra_args \
+    bazel build -s --verbose_failures $extra_args \
       --define=build_with_mkl_dnn_only=true --define=build_with_mkl=true \
       --define=tensorflow_mkldnn_contraction_kernel=1 \
       --copt="-mtune=${CPU}" --copt="-march=armv8-a" --copt="-moutline-atomics" \
@@ -93,7 +93,7 @@ if [[ $ONEDNN_BUILD ]]; then
       --config=noaws --config=v$tf_id  --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" \
       //tensorflow/tools/pip_package:build_pip_package
    elif [[ $tf_id == '2' ]]; then
-     bazel build $extra_args \
+     bazel build -s --verbose_failures $extra_args \
        --config=mkl_opensource_only \
        --copt="-mcpu=${CPU}" --copt="-flax-vector-conversions" --copt="-moutline-atomics" --copt="-O3" \
        --cxxopt="-mcpu=${CPU}" --cxxopt="-flax-vector-conversions" --cxxopt="-moutline-atomics" --cxxopt="-O3" \
@@ -106,7 +106,7 @@ if [[ $ONEDNN_BUILD ]]; then
    fi
 else
   echo "Eigen-only build for $TF_VERSION"
-  bazel build $extra_args --define tensorflow_mkldnn_contraction_kernel=0 \
+  bazel build -s --verbose_failures $extra_args --define tensorflow_mkldnn_contraction_kernel=0 \
     --copt="-mcpu=${CPU}" --copt="-flax-vector-conversions" --copt="-moutline-atomics" --copt="-O3" \
     --cxxopt="-mcpu=${CPU}" --cxxopt="-flax-vector-conversions" --cxxopt="-moutline-atomics" --cxxopt="-O3" \
     --linkopt="-L$ARMPL_DIR/lib -lamath -lm" \
