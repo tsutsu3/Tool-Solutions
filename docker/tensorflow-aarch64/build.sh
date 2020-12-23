@@ -231,7 +231,7 @@ elif [[ $tf_version == "2" ]]; then
    # TF2 dependency versions
    version="v2.3.0"
    bazel_version="3.4.0"
-   onednn_version="v1.7"
+   onednn_version="v1.8-rc"
    extra_args="$extra_args --build-arg tf_id=$tf_version \
       --build-arg tf_version=$version \
       --build-arg bazel_version=$bazel_version \
@@ -265,10 +265,10 @@ fi
 
 if [[ $build_dev_image ]]; then
   # Stage 4: Adds bazel and TensorFlow builds with sources and creates a whl.
-  docker buildx build $extra_args --target tensorflow-dev -t tensorflow-dev-v$tf_version$onednn:onednn-v1.7 --load .
+  docker buildx build $extra_args --target tensorflow-dev -t tensorflow-dev-v$tf_version$onednn:onednn-v1.8-rc --load .
 fi
 
 if [[ $build_tensorflow_image ]]; then
   # Stage 5: Clone benchmarks with TensorFlow installed.
-  docker buildx build $extra_args --target tensorflow -t tensorflow-v$tf_version$onednn:onednn-v1.7 --load .
+  docker buildx build $extra_args --target tensorflow -t tensorflow-v$tf_version$onednn:onednn-v1.8-rc --load .
 fi

@@ -204,11 +204,11 @@ fi
 
 if [[ $build_dev_image ]]; then
   # Stage 4: Adds PyTorch build with sources
-  docker buildx build $extra_args --target pytorch-dev -t pytorch-dev:onednn-v1.7 --load .
+  docker buildx build $extra_args --target pytorch-dev -t pytorch-dev:onednn-v1.8-rc --load .
 fi
 
 if [[ $build_pytorch_image ]]; then
   # Stage 5: Adds PyTorch examples
-  docker buildx build $extra_args --target pytorch -t pytorch:onednn-v1.7 --load .
+  docker buildx build $extra_args --target pytorch -t pytorch:onednn-v1.8-rc --load .
 fi
 

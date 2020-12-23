@@ -224,7 +224,7 @@ ENV ONEDNN_BUILD="${onednn_opt}" \
 
 # Key version numbers
 ENV TORCH_VERSION=1.6.0
-ENV ONEDNN_VERSION=v1.7
+ENV ONEDNN_VERSION=v1.8-rc
 ENV VISION_VERSION=v0.7.0
 
 # Use a PACKAGE_DIR in userspace

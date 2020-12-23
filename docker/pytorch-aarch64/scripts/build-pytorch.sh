@@ -54,7 +54,7 @@ fi
 # Update the oneDNN tag in third_party/ideep
 cd third_party/ideep/mkl-dnn
 git checkout $ONEDNN_VERSION
-patch -p1 < $PACKAGE_DIR/onednn_acl_verbose.patch
+# patch -p1 < $PACKAGE_DIR/onednn_acl_verbose.patch
 
 cd $PACKAGE_DIR/$src_repo
 
